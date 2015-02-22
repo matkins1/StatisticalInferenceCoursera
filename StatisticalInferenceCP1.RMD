@@ -1,0 +1,43 @@
+---
+title: "Statistical Inference Course Project - Part 1"
+author: "Michael Atkins"
+date: "February 22, 2015"
+output: html_document
+---
+
+OVERVIEW
+
+This paper provides results of a simulation exercise that investigates the exponential distribution in R and compares it with the Central Limit Theorem. Investigation was conducted using the distribution of averages of 40 exponentials and one thousand simulations.
+
+SIMULATIONS
+
+In the below simulation, I create two histograms, the first shows the distribution of 1,000 random uniform numbers. The second shows the distribution of 1,000 averages of 40 random uniform numbers. The second plot further includes a density line to show that the distribution of the 1,000 averages of 40 random uniform numbers is approximately normal (answer to question 3) .
+
+```{r, set-up simulation, echo=TRUE}
+n <- 1000 ## 1,000 simulations to n variable
+
+## generate and plot data for n random uniforms
+nuniform <- runif(n) ## generate n random uniforms
+hist(nuniform, xlab = "1,000 Random Uniforms", main = "Random Distribution Data") ## plot histogram of n random uniforms
+
+## generate and plot data for n averages of 40 random uniforms
+mns = NULL ## set mns variable to null
+for (i in 1 : n) mns = c(mns, mean(runif(40))) ## generate n averages of 40 random uniforms
+hist(mns, xlab = "1,000 Averages of 40 Random Uniforms", main = "Sample of Averages Data") ## plot histogram of n averages of 40 random uniforms
+
+xfit<-seq(min(mns),max(mns),length=1000) ## plot standard normal line
+yfit<-dnorm(xfit,mean=mean(mns),sd=sd(mns)) ## plot standard normal line -2 
+lines(xfit, yfit, col="blue", lwd=2) ## plot standard normal line -3
+```
+
+The following code chunk shows that the sample mean of the 1,000 random uniform numbers is approximately equal to the sample mean of the 1,000 averages of the 40 random uniform numbers.
+
+```{r, answer q1, echo=TRUE}
+mean(mns) - mean(nuniform) ## show that sample mean roughly equals theoretical mean of the distribution
+```
+
+The following code chunk shows how variable the 1,000 random uniform numbers are in relation to the sample mean of the variability of the sample of 1,000 averages of the 40 random uniform numbers.
+
+```{r, answer q2, echo=TRUE}
+var(mns) - var(nuniform) ## show how variable the sample is compared to the theoretical variance of the distribution
+```

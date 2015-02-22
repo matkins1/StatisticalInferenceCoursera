@@ -1,0 +1,39 @@
+---
+title: "Statistical Inference Course Project - Part 2"
+author: "Michael Atkins"
+date: "February 22, 2015"
+output: html_document
+---
+
+OVERVIEW
+
+This paper provides results of basic inferential data analysis exercise utilizing the ToothGrowth data from R. I seek to describe the differences in tooth growth length by two factors, "OJ" and "VC."
+
+ANALYSIS
+
+```{r, load dependencies and ToothGrowth data, echo=TRUE}
+require(ggplot2) ## require ggplot2 package
+TG <- ToothGrowth ## load ToothGrowth data to TG variable
+```
+
+```{r, provide basic summary of ToothGrowth data, warning=FALSE, echo=TRUE}
+str(TG) ## explore structure of data
+head(TG) ## explore the struture of the data
+qplot(dose, len, data = TG, geom = "smooth", method = "loess", facets=.~supp, main="Exploratory Graph by 'Supp' Factor", xlab = "Dose", ylab = "Length")  ## plot exploratory graph
+boxplot(len~supp,data=TG, main="Exploratory Boxplot by 'Supp' Factor", xlab="'Supp' Factor", ylab="Length") ## plot exploratory boxplot
+```
+
+```{r, conduct t.test on ToothGrowth data, echo=TRUE}
+l1 <- TG$len[1:30]; l2 <- TG$len[31:60] ## create variables for OJ/VC factors
+difference <- l2 - l1 ## create different variable between l2/l1
+mnl <- mean(difference); sl <- sd(difference); n <- 30 ## create mean, standard deviation, and occurrence variables
+t.test(difference) ## run t test by OJ/VC factors
+```
+
+ASSUMPTIONS
+
+In this analysis, I assume that the data as provided by ToothGrowth contains all relevant variables and factors and there are no other uncrecorded outside variables affecting the data. I further assume that observations 1:30 by VC factor and observations 31:60 by OJ factor are paired.
+
+CONCLUSION
+
+It appears as though the use of the OJ supplement as compared to the VC supplement increases the mean of the length of tooth growth in addition to reducing the range of results by dose. The mean of differences as provided by t.test is 3.7 and the 95% confidence interval is 1.4 to 6.0, which appears significant.
